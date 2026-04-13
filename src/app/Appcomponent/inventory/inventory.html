@@ -1,0 +1,126 @@
+<div class="container mt-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold">Inventory</h3>
+    <button class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addProductModal">
+      + Add Product
+    </button>
+  </div>
+
+  <!-- Search + Filter -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input type="text" class="form-control" placeholder="Search products..." [(ngModel)]="searchText">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="selectedCategory">
+        <option value="">All Categories</option>
+        <option>Mobile</option>
+        <option>Laptop</option>
+        <option>Tablet</option>
+        <option>Accessories</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Inventory Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Id</th>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Price (₹)</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inventory of inventoryDetails; let i = index">
+          <td>{{ inventory.id }}</td>
+          <td>{{ inventory.productName }}</td>
+          <td>{{ inventory.category }}</td>
+          <td>₹ {{ inventory.price }}</td>
+            <td>{{ inventory.stock }}</td>
+            <td>
+              <span class="badge" [ngClass]="inventory.stock > 0 ? 'bg-success' : 'bg-danger'">
+              {{ inventory.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+            </span>
+          </td>
+          <td class="d-flex justify-content-center gap-2">
+            <button class="btn btn-sm btn-secondary btn-outline" (click)="editProduct(inventory)">Edit</button>
+            <button class="btn btn-sm btn-danger btn-outline" (click)="deleteProduct(inventory.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="mt-3">
+    <ul class="pagination justify-content-end">
+      <li class="page-item disabled"><a class="page-link">Previous</a></li>
+      <li class="page-item active"><a class="page-link">1</a></li>
+      <li class="page-item"><a class="page-link">2</a></li>
+      <li class="page-item"><a class="page-link">Next</a></li>
+    </ul>
+  </nav>
+
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="addProductModalLabel">Add New Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="onAddProduct(); productForm.resetForm()" #productForm="ngForm" novalidate>
+          <div class="mb-3">
+            <label for="productName" class="form-label">Product Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="productName" name="productName" placeholder="e.g. Samsung Galaxy S24" [(ngModel)]="inventorydata.productName" required>
+            <div class="invalid-feedback">Product name is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="productCategory" class="form-label">Category <span class="text-danger">*</span></label>
+            <select class="form-select" id="productCategory" name="productCategory" [(ngModel)]="inventorydata.category" required>
+              <option value="">-- Select Category --</option>
+              <option>Mobile</option>
+              <option>Laptop</option>
+              <option>Tablet</option>
+              <option>Accessories</option>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="productPrice" class="form-label">Price (₹) <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="e.g. 499" min="0" [(ngModel)]="inventorydata.price" required>
+            <div class="invalid-feedback">Enter a valid price.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="productStock" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="productStock" name="productStock" placeholder="e.g. 50" min="0" [(ngModel)]="inventorydata.stock" required>
+            <div class="invalid-feedback">Enter a valid stock quantity.</div>
+          </div>
+
+          <div class="modal-footer px-0 pb-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" data-bs-dismiss="modal">Add Product</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

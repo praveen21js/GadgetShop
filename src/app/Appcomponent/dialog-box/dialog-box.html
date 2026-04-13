@@ -1,0 +1,22 @@
+<div class="modal-header" class="modal-dailg">
+    <h4 class="modal-title" id="modal-title">Record Deletion</h4>
+    <button 
+    type="button"
+    class="btn-close"
+    aria-label="Close button"
+    aria-describedby="modal-title"
+    (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <p>
+        <strong>You sure you want to delete this record? <span class="text-primary">this</span>record will be permanently deleted.</strong> 
+    </p>
+    <p>
+        All information associated with this record will be permannently deleted.
+        <span class="text-danger">This action cannot be undone.</span>
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
+    <button type="button" ngAutofocus class="btn btn-danger" (click)="confirm()">Ok</button>
+</div>
